@@ -14,7 +14,6 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Lora,Georgia,s
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
 [hidden]{display:none!important}
 h1,h2,h3,button,.chips a,.cta{font-family:Quicksand,system-ui,sans-serif}
-#ord{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:flex;align-items:center;justify-content:center;padding:16px}#ord[hidden]{display:none}.ordbox{position:relative;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:20px;width:100%;max-width:440px;max-height:92vh;overflow:auto}.ordbox h3{margin:0 0 6px;font-size:22px}.ordbox p{margin:0 0 12px;color:var(--mute);font-size:15px}#ordx{position:absolute;top:8px;right:10px;background:none;border:0;font-size:28px;line-height:1;color:var(--mute);cursor:pointer}#ordt{width:100%;box-sizing:border-box;font:15px/1.4 system-ui,sans-serif;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px;resize:none}.ordb{display:flex;flex-direction:column;gap:10px;margin-top:12px}.ordb button{font:700 16px Quicksand,system-ui,sans-serif;padding:12px;border-radius:999px;border:2px solid var(--acc);background:transparent;color:var(--acc);cursor:pointer}.ordb .cta{text-align:center}
 .draft{background:var(--ink);color:var(--bg);text-align:center;font:600 14px Quicksand,system-ui,sans-serif;padding:8px 12px}
 .hero{background:var(--sage);padding:44px 20px 40px;text-align:center;border-bottom:1px solid var(--line)}
 .hero h1{margin:0;font-size:clamp(54px,15vw,104px);line-height:.9;font-weight:500;letter-spacing:-.03em;color:var(--acc)}
@@ -70,14 +69,14 @@ footer{margin:36px auto 0;max-width:760px;padding:0 18px;color:var(--mute);font-
 <section id="visita"><h2>Visítanos</h2>
 <div class="info">
 <div><h3>Dirección</h3><p>Edificio Anca, Local 01 B, Avenida Caracas, Los Dos Caminos, Miranda. Tenemos asientos al aire libre.</p></div>
-<div><h3>Reservas y horarios</h3><p>Escríbenos por WhatsApp para reservar o confirmar el horario de hoy.</p><p style="margin-top:10px"><a class="cta main" href="https://wa.me/message/JICOLKSQVD6KM1">Reservar por WhatsApp</a></p></div>
+<div><h3>Reservas y horarios</h3><p>Escríbenos por WhatsApp para reservar o confirmar el horario de hoy.</p><p style="margin-top:10px"><a class="cta main" id="rv" href="#">Reservar por WhatsApp</a></p></div>
 </div></section>
 </main>
-<footer><p>Borrador de diseño con fines de demostración. Menú y precios tomados del menú compartido por el restaurante; confirma los datos antes de publicar. · Versión 4</p></footer>
-<div id="ord" hidden role="dialog" aria-modal="true" aria-label="Tu pedido"><div class="ordbox"><button id="ordx" aria-label="Cerrar">×</button><h3>Tu pedido</h3><p>Copia el pedido, abre WhatsApp y pégalo en el chat del restaurante.</p><textarea id="ordt" readonly rows="9"></textarea><div class="ordb"><button id="ordc">1. Copiar pedido</button><a class="cta main" id="ordw" href="https://wa.me/message/JICOLKSQVD6KM1" target="_blank" rel="noopener">2. Abrir WhatsApp</a></div></div></div>
+<footer><p>Borrador de diseño con fines de demostración. Menú y precios tomados del menú compartido por el restaurante; confirma los datos antes de publicar. · Versión 5</p></footer>
 <div id="bar" hidden><b id="bt"></b><span class="acts"><button id="clr">Vaciar</button><a class="cta" id="go" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a></span></div>
 <script>
-const WA='https://wa.me/message/JICOLKSQVD6KM1',L={},C={};let MSG='';
+const W='584166142400',L={},C={};
+document.getElementById('rv').href='https://wa.me/'+W+'?text='+encodeURIComponent('Hola Pastas Dalidia, quisiera reservar una mesa');
 const f=n=>'$'+n.toFixed(2).replace('.',',');
 const M=[
 {t:'Desayunos',i:[['Americano','Minipanquecas con miel, mantequilla, tocineta y huevo revuelto o frito',11],['Omelette','Con arepa o croissant y mantequilla: vegetales mixtos, jamón y queso, o champiñones',9.2],['Desayuno criollo','Arepa, perico de huevo, jamón y mozzarella',9.2],['Uova alla contadina','Huevo frito con tomates pelados, aliños y pan rebanado',9.2],['Tostadas francesas clásicas','Brioche con miel y mantequilla',7.9],['Tostadas francesas frutos rojos','Mermelada de frutos rojos, fresas, blueberry y chantilly',9.2],['Huevos benedictinos','Brioche, salsa holandesa y jamón serrano',12.1]]},
@@ -168,13 +167,9 @@ document.getElementById('menu').innerHTML=M.map((s,c)=>'<section id="s'+c+'"><h2
 document.getElementById('chips').innerHTML=M.map((s,c)=>'<a href="#s'+c+'">'+s.t+'</a>').join('');
 function bar(){let n=0,t=0,l=[];for(const id in C)if(C[id]){n+=C[id];t+=C[id]*L[id].p;l.push(C[id]+' x '+L[id].n)}
 document.getElementById('bar').hidden=!n;document.getElementById('bt').textContent=n+(n==1?' plato':' platos')+' · '+f(t);
-MSG='Hola Pastas Dalidia, quisiera pedir:\n'+l.map(x=>'• '+x).join('\n')+'\nTotal estimado: '+f(t)+'\n¿Delivery o retiro? Nombre y dirección: ';document.getElementById('go').href=WA}
-function openOrd(){document.getElementById('ordt').value=MSG;document.getElementById('ordc').textContent='1. Copiar pedido';document.getElementById('ord').hidden=false}
-function copyOrd(){const a=document.getElementById('ordt');a.focus();a.select();a.setSelectionRange(0,99999);let ok=false;try{ok=document.execCommand('copy')}catch(x){}
-if(!ok&&navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(MSG).catch(()=>{})}
-document.getElementById('ordc').textContent='¡Copiado! Ahora abre WhatsApp'}
+MSG='Hola Pastas Dalidia, quisiera pedir:\n'+l.map(x=>'• '+x).join('\n')+'\nTotal estimado: '+f(t)+'\n¿Delivery o retiro? Nombre y dirección: ';document.getElementById('go').href='https://wa.me/'+W+'?text='+encodeURIComponent(MSG)}
 function redraw(id){const [c,i]=id.split('-');document.getElementById('o'+c+'-'+i).innerHTML=ops(+c,+i);bar()}
-document.addEventListener('click',e=>{if(e.target.closest('#go')){e.preventDefault();openOrd();return}if(e.target.closest('#ordx')||e.target.id=='ord'){document.getElementById('ord').hidden=true;return}if(e.target.closest('#ordc')){copyOrd();return}const b=e.target.closest('button');if(!b)return;
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
 if(b.dataset.a){C[b.dataset.a]=(C[b.dataset.a]||0)+1;redraw(b.dataset.a)}
 else if(b.dataset.d){C[b.dataset.d]=Math.max(0,(C[b.dataset.d]||0)-1);redraw(b.dataset.d)}
 else if(b.id=='clr'){Object.keys(C).forEach(k=>{C[k]=0;redraw(k)})}});
